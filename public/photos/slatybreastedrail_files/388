@@ -1,0 +1,171 @@
+
+
+    jQuery(function(){
+
+        $ = jQuery;
+
+    function addDaysToDate(objDate, intDays) {
+        var numberOfMlSeconds = objDate.getTime();
+        var addMlSeconds = (intDays * 24) * 60 * 60 * 1000;
+        return new Date(numberOfMlSeconds + addMlSeconds);
+    }
+
+    const today = new Date();
+
+    if (today.getMonth() < 6) {
+        today.setFullYear(2022);
+    } else {
+        today.setFullYear(2021);
+    }
+
+    Chart.defaults.font.family = '"Noto Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,' +
+        '"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji",' +
+        '"Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"';
+
+
+    
+        let dates = ;
+    
+    dates = dates.map(i => addDaysToDate(new Date(Date.parse(i)), 3).toISOString())
+
+    const annotations = {
+                            box1: {
+                                type: 'box',
+                                xMin: "2021-12-31T00:00:00",
+                                backgroundColor: 'rgba(200, 200, 200, 0.2)',
+                                borderWidth: 0,
+                            },
+
+                            box2: {
+                                type: 'box',
+                                xMax: "2021-12-31T00:00:00",
+                                backgroundColor: 'rgba(100, 100, 100, 0.2)',
+                                borderWidth: 0,
+                            },
+
+                            line1: {
+                                type: "line",
+                                xMin: today.toDateString(),
+                                xMax: today.toDateString(),
+                                borderColor: "#8bc662",
+                            }
+    }
+
+    const chartOptions = function (data, middles, id) {
+        return {
+            type: 'bar',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Mean number of individuals',
+                    data: data,
+                    backgroundColor: [
+                        '#5c4760',
+                    ],
+                    categoryPercentage: 0.99,
+                    barPercentage: 0.99,
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                },
+                responsive: true,
+                fill: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 1
+                        },
+                    },
+                    x: {
+                        type: 'timeseries',
+                        time: {
+                            unit: 'month',
+                            stepSize: 1,
+                            displayFormats: {
+                                month: "MMM"
+                            },
+                            bounds: "ticks",
+                        },
+                        ticks: {
+                            align: 'center',
+                            source: "data",
+                        },
+                        grid: {
+                            display: false,
+                        },
+                        afterBuildTicks: axis => axis.ticks = middles.map(v => ({value: new Date(v)}))
+                    }
+                },
+                plugins: {
+                    annotation: {
+                        clip: false,
+                        annotations: annotations,
+                    },
+                    legend: {
+                        display: false,
+                    },
+                    zoom: {
+                        limits: {
+                            y: {
+                                min: "original",
+                                max: "original",
+                            },
+                        },
+                        zoom: {
+                            drag: {
+                                enabled: true,
+                            },
+                            pinch: {
+                                enabled: true,
+                            },
+                            scroll: {
+                                enabled: true
+                            },
+                            mode: 'y',
+                            onZoomComplete: function ({chart}) {
+                                $(`#zoomout${id}`).fadeIn();
+                            }
+                        }
+                    },
+                    tooltip: {
+                        displayColors: false,
+                        titleMarginBottom: 2,
+                        callbacks: {
+                            title: function (context) {
+                                let date = context[0].label.toString().split(",")[0] + " 2020";
+                                let endOfYear = moment("Dec 31 2020", "MMM D YYYY")
+                                let day1 = moment(date, "MMM D YYYY").subtract(3, 'day');
+                                if (endOfYear.diff(day1, 'days') < 10) {
+                                    return day1.format("MMM D") + ' - ' + endOfYear.format("MMM D");
+                                }
+                                let day2 = moment(date, "MMM D YYYY").add(3, 'day');
+                                return day1.format("MMM D") + ' - ' + day2.format("MMM D");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    
+            $(document).on("taphold dblclick", "canvas.bar-chart", function (event) {
+                Chart.getChart($(this).attr("id")).resetZoom();
+                $(`#zoomout${$(this).attr("data-chart-id")}`).fadeOut();
+            })
+
+            var up = 1;
+
+            $("#searchBarChart").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("div.all-bar-charts .bar-chart-row").filter(function () {
+                    $(this).toggle($(this).attr("data-search").toLowerCase().indexOf(value) > -1);
+                });
+                $(window).scrollTop($(window).scrollTop()+(up=-up)); // for lazy-loaded images
+            });
+    })
+    

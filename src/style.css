@@ -1,0 +1,14 @@
+
+body, #root {
+  margin: 0;
+  width: 100%;
+}
+/* Main container styles */
+.bird-quiz-app {
+  min-height: 100vh;
+  background: #567356;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}

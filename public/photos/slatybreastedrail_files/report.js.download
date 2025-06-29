@@ -1,0 +1,83 @@
+window.onload = function () {
+    if (!$) {
+        try {
+            $ = django.jQuery;
+        } catch {
+            $ = jQuery;
+        }
+
+    }
+    var checkExist1 = setInterval(function () {
+        if ($("div.clickable, div.clickable-caveats").length) {
+            clearInterval(checkExist1);
+            $("a.writeup-link").each(function(){
+                if(!$(this).attr("href")){
+                    var slug = $(this).closest("h5.species-header").attr("id");
+                    $(this).attr('href', "/species/" + slug)
+                }
+            })
+            $('a[href="#!"]').click(function (e) {
+                e.preventDefault();
+            });
+            $("div.clickable, div.clickable-caveats").click(function () {
+                window.open($(this).attr('href'), '_blank');
+            })
+            $('h5.species-header').click(function () {
+                var id1 = $(this).find('a.show').attr('linkto').replace(/header_/g, '')
+                $('.' + id1).fadeToggle();
+                $(this).toggleClass('expand');
+                $(this).find('a.show').html($(this).find('a.show').html().replace(/Show/, 'hide').replace(/Hide/, 'Show').replace(/hide/, 'Hide'));
+            })
+
+            $('a.img-show').click(function () {
+                var id1 = $(this).attr('linkto').replace(/header_/g, '')
+                $('.' + id1).fadeToggle();
+                $(`a.show[linkto='header_${id1}']`).closest('h5.species-header').toggleClass('expand');
+                $(`a.show[linkto='header_${id1}']`).html($(`a.show[linkto='header_${id1}']`).html().replace(/Show/, 'hide').replace(/Hide/, 'Show').replace(/hide/, 'Hide'));
+
+            })
+
+            $('strong.species-name').wrap(function () {
+                var id = $(this).text().toLowerCase()
+                    .replace(/[^\w- ]+/g, '')
+                    .replace(/ +/g, '-');
+
+                if($(`#${id}`).length == 0) {
+                    if ($(`#${id.slice(0, -1)}`).length > 0) {
+                        id = id.slice(0, -1);
+                    } else if ($(`#review_${id}`).length > 0) {
+                        id = `review_${id}`;
+                    } else if ($(`#review_${id.slice(0, -1)}`).length > 0) {
+                        id = `review_${id.slice(0, -1)}`;
+                    }
+                }
+
+                return '<a href="#' + id + "\"></a>";
+            })
+
+            $('a.showall').click(function () {
+                $('.species-header a.show').html(function () {
+                    return $(this).html().replace(/Show/, 'hide').replace(/Hide/, 'Show').replace(/hide/, 'Hide');
+                });
+                if ($(this).html().includes('Hide')) {
+                    $('div.record-card').fadeOut();
+                    $('h5.species-header').removeClass('expand');
+                    $('h5.species-header').html(function () {
+                        return $(this).html().replace(/Hide/, 'Show');
+                    });
+                }
+                if ($(this).html().includes('Show')) {
+                    $('div.record-card').fadeIn();
+                    $('h5.species-header').addClass('expand');
+                    $('h5.species-header').html(function () {
+                        return $(this).html().replace(/Show/, 'Hide');
+                    });
+                }
+
+                $(this).html($(this).html().replace(/Show/, 'hide').replace(/Hide/, 'Show').replace(/hide/, 'Hide'));
+
+            })
+
+        }
+    }, 100);
+}

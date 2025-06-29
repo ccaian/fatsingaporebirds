@@ -1,0 +1,419 @@
+function selectColor(colorNum, colors) {
+    if (colors < 1) colors = 1; // defaults to one color - avoid divide by zero
+    return "hsl(" + (colorNum * (360 / colors) % 360) + ",80%,85%)";
+}
+
+function loadTable(data = null, src = null, main = false, $table, $accepted_only_checkbox) {
+    var json = data;
+
+    const hasSubspecies = (obj) => !!obj.subspecies;
+
+    var showSubsp = false;
+    var toggleSubsp = false;
+
+    var columnDefs = [{
+        targets: 0,
+        visible: false,
+        searchable: false,
+    }]; // Record ID
+
+    if (!main) {
+        columnDefs.push({
+            targets: 1,
+            width: "27%"
+        }); // Dates
+
+        columnDefs.push({
+            targets: 2,
+            width: "36%"
+        }); // Locality
+
+        columnDefs.push({
+            targets: 3,
+            width: "9%"
+        }); // Count
+    }
+
+    columnDefs.push({
+        targets: 4,
+        visible: false,
+        width: "12%"
+    }); // Subspecies (hide by default)
+
+    columnDefs.push({
+        targets: 5,
+        width: "16%"
+    }); // Verdict
+
+    columnDefs.push({
+        targets: 6,
+        visible: false,
+    }); // Is accepted (always hidden, used only for filtering)
+
+    var columns = [{data: "record_id", title: "Record ID", className: "record_id"},
+        {
+            data: "full_dates", title: "Date", className: "full_dates",
+            render: function (data, type, full, meta) {
+                if (type === "sort") return data;
+
+                const options = {year: 'numeric', month: 'short', day: 'numeric'};
+                if (data.includes(" to ")) {
+                    var data1 = data.split(" to ")[0].split("-");
+                    var data2 = data.split(" to ")[1].split("-");
+                    var date1 = new Date(parseInt(data1[0]),
+                        parseInt(data1[1]) - 1, parseInt(data1[2])).toLocaleString('en-GB', options);
+                    var date2 = new Date(parseInt(data2[0]),
+                        parseInt(data2[1]) - 1, parseInt(data2[2])).toLocaleString('en-GB', options);
+                    return `<span class="fw-600">${date1} to ${date2}</span>`;
+                } else {
+                    var data1 = data.split("-")
+                    var date1 = new Date(parseInt(data1[0]),
+                        parseInt(data1[1]) - 1, parseInt(data1[2])).toLocaleString('en-GB', options);
+                    return `<span class="fw-600">${date1}</span>`;
+                }
+
+
+            }
+        },
+        {data: "locality", title: "Location", className: "locality"},
+        {data: "count", title: "Count", className: "count"},
+        {data: "subspecies", title: "Subspecies", className: "subspecies"},
+        {data: "decision", title: "Verdict", className: "decision"},
+        {data: "is_accepted", title: "accepted", className: "accepted"}];
+
+    var extra_attrs;
+
+    if (json) {
+        extra_attrs = {
+            "data": json.records,
+            "paging": false,
+            "info": false,
+        }
+        if (json.records && json.records.some(hasSubspecies)) {
+            showSubsp = false;
+            toggleSubsp = true;
+            json.records.forEach((record) => {
+                if (hasSubspecies(record)) {
+                    record.subspecies = record.subspecies.replace("/", "/<wbr>");
+                }
+            })
+        }
+        if (json.review_periods && json.review_periods.some(hasSubspecies)) {
+            showSubsp = true;
+            toggleSubsp = true;
+        }
+    } else {
+        extra_attrs = {
+            "ajax": {
+                url: src,
+                dataSrc: '',
+                headers: {
+                    "Authorization": "Api-Key " + SBP_API_KEY,
+                },
+            },
+        }
+    }
+
+    let attrs = {
+        "columnDefs": columnDefs,
+        "dom": 'rtip',
+        "responsive": true,
+        "columns": columns,
+        "order": [[1, 'desc']],
+    }
+
+    return function () {
+        var dataTable = $table.DataTable({
+            ...attrs, ...extra_attrs, processing: true,
+        });
+
+        $table.on('click', 'tbody tr', function () {
+            window.open(`https://records.singaporebirds.com/record/${dataTable.row(this).data()["record_id"]}`);
+        });
+
+        dataTable.on('draw', function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+        const accepted_only = main || !urlParams.has("accepted_only") || ["1", "true"].includes(urlParams.get("accepted_only"))
+
+        if (main || accepted_only) {
+            dataTable.column(6).search("true").draw();
+        }
+
+        if (showSubsp) {
+            const iocid = $table.attr("iocid");
+            dataTable.column(4).visible(true); // Subspecies
+            $(`#showSubspecies${iocid}`).show().text("Hide subspecies.");
+        }
+
+        if (toggleSubsp) {
+            const iocid = $table.attr("iocid");
+            $(`#showSubspecies${iocid}`).show().on("click", function (ev) {
+                const column = dataTable.column(4);
+                column.visible(!column.visible());
+                column.visible() ? $(this).text("Hide subspecies.") : $(this).text("Show subspecies.");
+
+            })
+        }
+    }
+}
+
+function loadTableFull(data = null, src = null, $table, $accepted_only_checkbox) {
+    var json = data;
+
+    const hasSubspecies = (obj) => !!obj.subspecies;
+    const hasRelatedRecord = (obj) => !!obj.related_records_id;
+
+    var showSubsp = false;
+    var toggleSubsp = false;
+    var showRelated = false;
+
+    var columnDefs = [{
+        targets: 7,
+        visible: false,
+        searchable: false,
+    }, { "type" : "non-empty-string",targets: [0] }]; // Record ID
+
+    columnDefs.push({
+            targets: 1,
+            width: "27%"
+        }); // Dates
+
+        columnDefs.push({
+            targets: 2,
+            width: "36%"
+        }); // Locality
+
+        columnDefs.push({
+            targets: 3,
+            width: "9%"
+        }); // Count
+
+    columnDefs.push({
+        targets: 4,
+        visible: false,
+        width: "12%"
+    }); // Subspecies (hide by default)
+
+    columnDefs.push({
+        targets: 5,
+        width: "16%"
+    }); // Verdict
+
+    columnDefs.push({
+        targets: 6,
+        visible: false,
+    }); // Is accepted (always hidden, used only for filtering)
+
+    var columns = [
+        {
+            data: "related_record_id",
+            title: "",
+            className: "related_record_id",
+        },
+        {
+            data: "full_dates", title: "Date", className: "full_dates",
+            render: function (data, type, full, meta) {
+                if (type === "sort") return data;
+                const options = {year: 'numeric', month: 'short', day: 'numeric'};
+                if (data.includes(" to ")) {
+                    var data1 = data.split(" to ")[0].split("-");
+                    var data2 = data.split(" to ")[1].split("-");
+                    var date1 = new Date(parseInt(data1[0]),
+                        parseInt(data1[1]) - 1, parseInt(data1[2])).toLocaleString('en-GB', options);
+                    var date2 = new Date(parseInt(data2[0]),
+                        parseInt(data2[1]) - 1, parseInt(data2[2])).toLocaleString('en-GB', options);
+                    return `<span class="fw-600">${date1} to ${date2}</span>`;
+                } else {
+                    var data1 = data.split("-")
+                    var date1 = new Date(parseInt(data1[0]),
+                        parseInt(data1[1]) - 1, parseInt(data1[2])).toLocaleString('en-GB', options);
+                    return `<span class="fw-600">${date1}</span>`;
+                }
+
+
+            }
+        },
+        {data: "locality", title: "Location", className: "locality"},
+        {data: "count", title: "Count", className: "count"},
+        {data: "subspecies", title: "Subspecies", className: "subspecies"},
+        {data: "decision", title: "Verdict", className: "decision"},
+        {data: "is_accepted", title: "Accepted", className: "accepted"},
+        {data: "record_id", title: "Record ID", className: "record_id"},
+    ];
+
+    var extra_attrs;
+
+    if (json) {
+        extra_attrs = {
+            "data": json.records,
+            "paging": false,
+            "info": false,
+        }
+        if (json.records) {
+            if (json.records.some(hasSubspecies)) {
+                showSubsp = false;
+                toggleSubsp = true;
+                json.records.forEach((record) => {
+                    if (hasSubspecies(record)) {
+                        record.subspecies = record.subspecies.replace("/", "/<wbr>");
+                    }
+                })
+            }
+            if (json.records.some(hasRelatedRecord) && $accepted_only_checkbox) {
+                var past = [];
+                var num = 0;
+                var color;
+                var numRelated = Math.min(json.records.filter(hasRelatedRecord).length, 10);
+                showRelated = true;
+
+                json.records.forEach((record) => {
+                    if (hasRelatedRecord(record)) {
+                        num++;
+                        color = selectColor(num, numRelated);
+                        var relateds = record.related_records_id.split(',').map((id) => +id);
+                        record.related_record_id = `<span class="badge rounded-pill text-dark float-right" style="background-color: ${color}">${num}</span>`;
+                        json.records.forEach((related_record) => {
+                            if (relateds.includes(related_record.record_id)) {
+                                related_record.related_record_id = num;
+                                related_record.related_record_id = `<span class="badge rounded-pill text-dark float-right" style="background-color: ${color}">${num}</span>`
+                            }
+                        })
+                    }
+                })
+            }
+
+            if (showRelated) {
+                columnDefs.push({
+                    targets: 0,
+                    visible: true,
+                    width: "1%",
+                }); // Related record ID (always hidden, used only for labeling/grouping)
+            } else {
+                columnDefs.push({
+                    targets: 0,
+                    visible: false,
+                    width: "1%",
+                }); // Related record ID (always hidden, used only for labeling/grouping)
+            }
+
+            if (json.review_periods && json.review_periods.some(hasSubspecies)) {
+                showSubsp = true;
+                toggleSubsp = true;
+            }
+        } else {
+            extra_attrs = {
+                "ajax": {
+                    url: src,
+                    dataSrc: '',
+                    headers: {
+                        "Authorization": "Api-Key " + SBP_API_KEY,
+                    },
+                },
+            }
+        }
+    }
+
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "non-empty-string-asc": function(str1, str2) {
+            if ( str1 == null || str1 == "")
+                return 1;
+            if ( str2 == null || str2 == "")
+                return -1;
+            return ((str1 < str2) ? -1 : ((str1 > str2) ? 1 : 0));
+        },
+
+        "non-empty-string-desc": function(str1, str2) {
+            if ( str1 == null || str1 == "")
+                return 1;
+            if ( str2 == null || str2 == "")
+                return -1;
+            return ((str1 < str2) ? 1 : ((str1 > str2) ? -1 : 0));
+        }
+    });
+
+    let attrs = {
+        "columnDefs": columnDefs,
+        "dom": 'rtip',
+        "responsive": true,
+        "columns": columns,
+        "order": [[1, 'desc']],
+    }
+
+    return function () {
+        var dataTable = $table.DataTable({
+            ...attrs, ...extra_attrs, processing: true,
+        });
+
+        $table.on('click', 'tbody tr', function () {
+            window.open(`https://records.singaporebirds.com/record/${dataTable.row(this).data()["record_id"]}`);
+        });
+
+        dataTable.on('draw', function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+        const accepted_only = !urlParams.has("accepted_only") || ["1", "true"].includes(urlParams.get("accepted_only"))
+
+        if ( accepted_only) {
+            dataTable.column(6).search("true").draw();
+        }
+
+        if (showSubsp) {
+            const iocid = $table.attr("iocid");
+            dataTable.column(4).visible(true); // Subspecies
+            $(`#showSubspecies${iocid}`).show().text("Hide subspecies.");
+        }
+
+        if (toggleSubsp) {
+            const iocid = $table.attr("iocid");
+            $(`#showSubspecies${iocid}`).show().on("click", function (ev) {
+                const column = dataTable.column(4);
+                column.visible(!column.visible());
+                column.visible() ? $(this).text("Hide subspecies.") : $(this).text("Show subspecies.");
+            })
+        }
+
+        if(showRelated) {
+            const iocid = $table.attr("iocid");
+            $(`#showRelated${iocid}`).show();
+        }
+
+        $accepted_only_checkbox.on("change", function () {
+                if ($(this).is(":checked")) {
+                    dataTable.column(6).search("true").draw();
+                } else {
+                    dataTable.column(6).search("").draw();
+                }
+            })
+    }
+}
+
+jQuery(document).ready(function () {
+    if (!$) {
+        $ = jQuery;
+    }
+
+    $('.species-data-main').each(function () {
+        loadTable(null, $(this).attr("src"), true, $(this), null)();
+    });
+
+    $('.species-data').each(function () {
+        loadTable(null, $(this).attr("src"), false, $(this), null)();
+    });
+
+    $('.inline-launch').on("click", function () {
+        var target = "#" + $(this).attr("target");
+        $(target).each(function () {
+            loadTable(null, $(this).attr("src"), false, $(this), null)();
+        });
+    })
+
+})

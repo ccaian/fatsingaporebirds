@@ -1,0 +1,779 @@
+/* CUSTOM BRANDING COLORS */
+
+:root {
+	--page-background:  #fcfefb;
+	--page-header-background: #ededed;
+	--header-text: #5c4760;
+	--link-text: #4c7a2d;
+	--link-text-hover: #8bc662;
+	--selection-text-highlight: var(--header-text);
+	--page-footer-background: var(--page-background);
+	
+}
+
+body { /* BACKGROUND ENTIRE PAGE */
+	background-color: var(--page-background);
+}
+
+::-webkit-scrollbar {
+    height: 12px;
+    width: 9px;
+    background: var(--page-header-background);
+} 
+
+::-webkit-scrollbar-thumb {
+    background: var(--header-text);
+    -webkit-border-radius: 1ex;
+    -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+} 
+
+::-webkit-scrollbar-corner {
+    background: var(--header-text);
+} 
+
+div.fixed-top { /* SITE HEADER BACKGROUND */
+	background-color: var(--page-header-background) !important;   
+}
+
+h1 { /* HEADER TEXT */
+	color: var(--header-text);
+	font-weight: 600; 
+	letter-spacing: -0.5px;
+}
+
+h2, .h2 {
+	font-size: calc(1.15rem + 0.9vw)
+}
+
+h3, .h3 {
+	font-size: calc(1.15rem + 0.6vw)
+}
+
+h4, .h4 {
+	font-size: calc(1.15rem + 0.3vw);
+	font-weight: 600;
+} 
+
+body, li.menu-item {
+	font-size: 0.9rem;
+}
+
+@media screen and (max-width: 896px) {
+	body, li.menu-item {
+		font-size: 0.8rem;
+	}
+	th, td {
+		font-size: 0.7rem;
+	}
+} 
+
+@media screen and (max-width: 1200px) {
+	li.menu-item {
+		font-size: 0.85rem;
+	}
+} 
+
+div.wp-block-media-text__content h3 {
+	color: var(--header-text);
+}
+
+h3, h4 {
+	color: #6b6b6b;
+}
+
+a, a.page-link { /* LINK TEXT */
+	color: var(--link-text);
+} 
+
+a:hover, a.page-link:hover { /* LINK TEXT (HOVER) */
+	color: var(--link-text-hover);
+}
+
+.alert-info {
+    color: #304a4d;
+    background-color: #dee9ea;
+    border-color: #d1e0e1;
+}
+
+::selection { /* SELECTED TEXT */
+  background: var(--selection-text-highlight) !important;
+}
+
+div.bootscore-info {  /* FOOTER BACKGROUND */
+	background-color: var(--page-footer-background) !important;
+}
+
+nav#nav-main .navbar-brand img { /* LOGO SIZE */
+	height: 3rem;
+}
+
+div.bootscore-footer {
+	display: none;
+}
+
+div.wp-block-essential-blocks-parallax-slider  div.slide__image-wrapper img {
+	opacity: 0.6 !important;
+}
+
+div.eb-parallax-slider-wrapper {
+	background-color: transparent !important;
+}
+
+.eb-parallax-slider-wrapper .eb-parallax-container {
+	padding: 0 0 1rem !important;
+}
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--header-text);
+    --bs-btn-border-color: var(--header-text);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #955ba1;
+    --bs-btn-hover-border-color: var(--header-text);
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--header-text);
+    --bs-btn-active-border-color: var(--header-text);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #955ba1;
+    --bs-btn-disabled-border-color: var(--header-text);
+}
+
+figure.wp-block-media-text__media {
+	margin-bottom: 1rem !important;
+}
+
+p.header-style {
+	font-family: 'Libre Franklin';
+	line-height: 1.15;
+}
+
+ol.lettered-list {
+	list-style-type: lower-alpha;
+	text-align: left;
+}
+
+.nav-link {
+	padding-left: var(--bs-navbar-nav-link-padding-x);
+	padding-right: var(--bs-navbar-nav-link-padding-x);
+	cursor: pointer;
+}
+
+.p-0 {
+	padding: 0 !important;
+}
+
+.wp-block-separator.is-style-dots {
+	opacity: 0.6;
+}
+
+figure figcaption {
+	font-size: smaller;
+}
+
+.navbar {
+	--bs-navbar-padding-y: 0.25rem;
+}
+
+h2.card-header {
+	color: var(--header-text) !important;
+	background-color: none;
+}
+
+.simple-social-icons h2 {
+	text-align: center;
+}
+
+#simple-social-icons-3 ul.aligncenter li a, #simple-social-icons-3 ul.aligncenter li a:hover, #simple-social-icons-3 ul.aligncenter li a:focus{
+	background-color: var(--header-text) !important;
+}
+
+.container-flex {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 5px;
+    width: 100%;
+    background-color: whitesmoke;
+    padding: 10px 4px 10px 4px;
+    line-height: 1.3;
+}
+
+section.external-links p {
+    margin: 0px;
+}
+
+section.external-links {
+    margin-bottom: 1rem;
+}
+
+section.references {
+    margin-top: 0px;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+
+iframe.iframe-bar-chart {
+    border: none;
+    margin: 0 !important;
+}
+
+h4.species-placeholder {
+    margin: 0px 0px 8px 8px !important;
+}
+
+div.iframe-container {
+    background: url("https://records.singaporebirds.com/static/img/spinner.gif") center center no-repeat;
+    background-size: 100px;
+}
+
+div.iframe-container.loaded {
+    background: none;
+}
+
+.site-header-wrapper::before {
+    background-image: url("https://birdsociety.sg/wp-content/themes/bootscore-child-main/img/logo/logo-sm.png");
+    background-size: 50px 50px;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    content:"";
+    top: 50px;
+    position: relative;
+}
+
+.site-title {
+	margin-left: 10px; 
+}
+
+.site-description {
+    margin-left: 10px;
+    margin-top: 3px;
+}
+
+h1, p.site-title a, h2.entry-title a {
+	color: #633C6B;
+}
+
+table.dataTable {
+  width: 100% !important;
+	text-align: left;
+}
+
+table.dataTable thead th, table.dataTable tbody td {
+	padding: 0.25rem 0.25rem 0.25rem 0.5rem !important;
+}
+
+table.dataTable thead th {
+    background-color: gainsboro;
+}
+
+table.dataTable tr:hover {
+    background-color: gainsboro;
+    cursor: pointer;
+} 
+
+div.header-container, div.footer-container {
+    background-color: lightgray;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+}
+
+div.species-info {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid gainsboro;
+    margin-bottom: 1.5rem;
+} 
+
+
+div.species-banner { 
+	border: 1px solid gray; 
+	border-color: #696969; 
+	text-align: center; 
+	padding: 10px; 
+	align-items: center; 
+	justify-content: center; 
+	padding-left: 10%; 
+	padding-right: 10%; 
+	margin-bottom: 20px; 
+}
+
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: var(--link-text);
+	font-size: inherit;
+}
+
+#speciesData_wrapper {
+    margin-top: 10px;
+} 
+
+td.species {
+	font-weight:  600;
+}
+
+td.species_scientific {
+	font-style: italic;
+}
+
+.ui-accordion .ui-accordion-content {
+	padding: 1rem;
+}
+
+span.time-updated-separator, time.updated:not(.published) {
+	display: none;
+}
+
+#ajaxsearchlite1 .probox, div.asl_w .probox {
+	padding: 0px;
+	border: none; 
+}
+
+div.thumbnail-grid div.card {
+	background-color: transparent;
+	border: none;
+	padding: 2px;
+}
+
+.card-img, .card-img-top {
+	border-radius: 0;
+}
+
+div.thumbnail-grid div.hide-until-hover {
+	opacity: 0;
+	display: none;
+	position: absolute;
+	bottom: 100px;
+	transition: all 0.25s ease-in;
+	height: 0;
+} 
+
+div.thumbnail-grid h2 {
+	color: white !important;
+	text-align: left;
+	font-size: 1.5rem;
+}
+
+@media(max-width: 960px){
+	div.thumbnail-grid h2 { 
+		font-size: 1.25rem;
+	}
+} 
+
+div.thumbnail-grid div.card:hover div.hide-until-hover {
+	opacity: 1;
+	display: flex;
+	transition: all 0.25s ease-in;
+}
+
+
+div.thumbnail-grid div.card img {
+	transition: all 0.25s ease-in;
+}
+
+div.thumbnail-grid div.card:hover img {
+	filter: brightness(50%) !important;
+	transition: all 0.25s ease-in;
+} 
+
+div.thumbnail-grid a.read-more {
+	display: none; 
+} 
+
+div.thumbnail-grid .card-img-top {
+	aspect-ratio: 3/2;
+	object-fit: cover;
+}
+
+section.widget_blog_subscription {
+	text-align: center;
+}
+
+#subscribe-email input {
+    width: 95%;
+    border-radius: 10px;
+    border: 1px solid gainsboro;
+    padding: 5px 10px;
+	background: white;
+	color: black;
+}
+
+div.report-body div.card {
+	background-color: transparent;
+	border: none;
+}
+
+.report-footer {
+    margin-top: 30px;
+    font-style: italic;
+    font-size: 1rem;
+    margin-left: 2%;
+}
+
+h4.highlights-header {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+h4.rarity-under-review-header {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: #b82f0b;
+}
+
+div.highlights ul {
+    list-style-type: none;
+    margin-left: 0;
+		padding-left: 0;
+}
+
+div.highlights li {
+    padding-left: 5%;
+    border-left: 3px solid gray;
+    margin-left: 5%;
+    padding-bottom: 8px;
+    font-size: 1.2rem;
+}
+
+div.entry-content {
+    text-align: justify;
+}
+
+div.record-details {
+    text-align: left;
+}
+
+h5.species-header a.writeup-link {
+	font-size: 0.8rem;
+}
+
+h5.species-header a.show {
+	font-size: 1rem;
+	display: inline-block;
+	float: right;
+}
+
+.clickable {
+    cursor: pointer;
+    background-color: #bee2e570;
+    border-radius: 8px;
+    transition: 0.5s all ease;
+}
+
+.clickable-caveats {
+    cursor: pointer;
+    background-color: #e2afaf70;
+    border-radius: 8px;
+    transition: 0.5s all ease;
+}
+
+div.record-details > p {
+    margin: 0px !important;
+}
+
+.unclickable {
+    background-color: #49525210;
+    border-radius: 8px;
+}
+
+.clickable:hover {
+    cursor: pointer;
+    background-color: #94ced3;
+    transition: 0.5s all ease;
+}
+
+.clickable-caveats:hover {
+    cursor: pointer;
+    background-color: #ea7d7d70;
+    border-radius: 8px;
+    transition: 0.5s all ease;
+}
+
+div.record-card p {
+    margin: 5px;
+}
+
+p.record-early-late {
+    font-size: smaller !important;
+}
+
+p.record-location {
+    font-weight: bold;
+}
+
+div.db-subrecords, div.ebird-sightings {
+    padding-bottom: 5px;
+}
+
+em.sciname {
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+a.writeup-link {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    margin-right: 5px;
+}
+
+div.width-70 {
+    width: 70%;
+}
+
+div.ebird-link, div.db-link {
+    font-size: smaller;
+    padding: 0px;
+    display: inline-block;
+}
+
+div.incomplete {
+    font-size: smaller;
+    padding-right: 0px;
+    display: inline-block;
+}
+
+.container-flex div {
+    /*padding-top: 2px;*/
+    padding-bottom: 2px;
+}
+
+h5.species-header
+{
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 5px !important;
+    margin-top: 20px !important;
+    display: inline-block;
+    background-color: #d7d7d7;
+    padding: 8px;
+    width: 100%;
+    font-size: 1rem !important;
+    transition: 0.5s all ease;
+    line-height: 1.1;
+		font-family: "Noto Sans";
+		cursor: pointer;
+}
+
+span.date-only {
+    display: inline-block;
+    font-size: small;
+}
+
+.rarity-under-review {
+    background-color: #e7dc9370;
+}
+
+.species-header:hover, .species-header.expand {
+    background-color: #F3C6BC70;
+    transition: 0.5s all ease;
+    transform: scale(1.05);
+}
+
+.rarity-under-review:hover, .rarity-under-review.expand {
+    background-color: #e7dc93;
+    transition: 0.5s all ease;
+    transform: scale(1.05);
+}
+
+span.sightings-hidden {
+    display: flex;
+    flex-direction: row;
+}
+
+div.hidden-card {
+    display: none;
+}
+
+span.sightings-hidden:before, span.sightings-hidden:after {
+    content: "";
+    flex: 1 1; 
+    border-bottom: 1px solid gray;
+    margin: auto;
+}
+
+span.sightings-hidden:before {
+    margin-right: 10px;
+    margin-left: 30px;
+}
+
+span.sightings-hidden:after {
+    margin-left: 10px;
+    margin-right: 30px;
+}
+
+button.record {
+    margin-left: 7px;
+}
+
+.sighting1 {
+    text-align: right;
+    padding-right: 5px;
+    padding-left: 8px;
+    width: 30%;
+		font-size: 0.8rem;
+		line-height: 1.2;
+}
+
+.intro {
+    font-style: italic;
+    font-size: 1.2rem;
+}
+
+@media screen and (min-width: 1344px) {
+    div.report-body .large-element {
+        margin-left: 0px !important;
+    }
+}
+
+.record-card {
+    margin-left: 2%;
+    padding-left: 2%;
+    border-left: 2px solid silver;
+    padding-right: 1%;
+}
+
+h4.overall-header {
+    margin-top: 20px !important;
+    font-size: 1.5rem !important;
+} 
+
+thead,tbody,tfoot,tr,td,th {
+    padding: 10px 5px;
+    text-align: left;
+    border-bottom: 1px solid gainsboro;
+}
+
+div.alert-info-circle span:before {
+    content: "\f05a";
+    position: absolute;
+    left: 1rem;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+div.alert-info-circle {
+    padding-left: 2.5rem;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--header-text) inset !important;
+}
+
+div.alert-info-circle span:before {
+    content: "\f05a";
+    position: absolute;
+    left: 1rem;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+div.alert-info-circle {
+    padding-left: 2.5rem;
+}
+
+li#menu-item-52220 a.nav-link {
+	color: var(--header-text);
+} 
+
+#infinite-footer {
+	display: none;
+}
+
+
+@media (min-width: 992px) {
+    .card-img-lg-start {
+        object-fit: contain;
+    }
+}
+body.search-results nav:has(ul.pagination) {
+	display: none;
+} 
+
+
+div#siteBanner {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 70%), rgba(255, 255, 255, 70%)), url("https://singaporebirds.com/wp-content/uploads/2023/08/repeat-bg-2.png");
+    background-size: contain;
+	transition: 1s all ease;
+	display: none;
+}
+
+div#launchBanner a {
+    display:  inline-block;
+    font-size: calc(1.15rem + 0.6vw);
+    padding-top:  0;
+	padding-bottom: 0;
+	transition: 1s all ease;
+}
+
+div#launchBanner a:hover {
+  background-color: var(--header-text);
+	color: white;
+	transition: 1s all ease;
+}
+
+#launchBanner h3 {
+    color:  var(--header-text);
+	font-size: calc(1.15rem + 0.6vw);
+    font-weight: 700;
+    display: inline !important;
+    line-height: 1;
+}
+
+#launchBanner:has(a:hover) {
+    background-position-x: 5rem;
+    transition: 1s all ease;
+} 
+
+
+div.front-page-links div.card {
+	border-radius: 0;
+	border: none;
+	transition: 0.5s;
+}
+
+div.front-page-links div.card h4 {
+    color: var(--header-text);
+    font-size: calc(1rem + 0.5vw);
+}
+
+
+div.front-page-links div.card.bigger h4 {
+    font-size: calc(1.375rem + 0.5vw);
+    font-weight: 600;
+		line-height: 0.98;
+		margin-bottom: 0.75rem;
+}
+
+div.front-page-links div.card-body {
+    transition: 0.25s;
+}
+
+div.front-page-links div.card:hover {
+	background-color: gainsboro;
+	transition: 0.25s;
+}
+
+div.row.front-page-links {
+		background-color: white;
+}
+
+h2.comments-title {
+	font-size: 1.5rem;
+}
+
+#content img {
+	width: 100%;
+}
+
+section.widget_custom_html {
+	padding: 0;
+	border: 0
+}
+
+section.widget_custom_html .widget-title {
+	display: none;
+}
